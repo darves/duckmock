@@ -232,6 +232,26 @@ class DashboardUserModel {
 }
 ```
 
+## Accessing Swagger Documentation
+
+DUCKMOCK provides dynamically generated Swagger documentation for your API, making it easy to test and understand your endpoints.
+
+### How to Access
+
+Once the server is running, you can access the Swagger UI to interact with your API:
+
+1. Navigate to `http://localhost:[port]/api-docs` in your web browser.
+2. You will see a list of all available endpoints along with their request methods, parameters, and response schemas.
+3. You can try out each endpoint directly from the Swagger UI by entering required parameters and executing the requests.
+
+### Features
+
+- **Interactive Documentation**: Swagger UI presents a visual representation of your API, allowing you to understand and interact with it without writing any additional code.
+- **Real-time Updates**: As the Swagger documentation is generated dynamically, any changes in your API (like new endpoints or changes in existing ones) will be reflected immediately in the Swagger UI.
+- **Endpoint Testing**: You can execute API requests directly from the Swagger UI and view detailed responses, making it a powerful tool for testing and debugging.
+
+This feature enhances the ease of use and testability of your API, contributing to a smoother development process.
+
 ## Conclusion
 
 With DUCKMOCK, creating mock endpoints is a matter of defining the appropriate folder structure, implementing controller and model files, and utilizing our powerful decoration system to specify the mock data. This allows for a flexible and rapid development process, supporting a wide range of mocking scenarios.

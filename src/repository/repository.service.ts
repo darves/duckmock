@@ -51,6 +51,33 @@ export class RepositoryService {
     return this.wrapInPagination(result, params.pagination || {}, totalCount, afterFilterCount);
   }
 
+  public update(id: number, updatedItem: Partial<BaseModel>): BaseModel {
+    const index = this.db.findIndex(item => item.id === id);
+    if (index === -1) {
+      throw new Error('Item not found');
+    }
+    
+    // Update the item with new values
+    this.db[index] = { ...this.db[index], ...updatedItem };
+    return this.db[index];
+  }
+
+  public patch(id: number, patchItem: Partial<BaseModel>): BaseModel {
+    const index = this.db.findIndex(item => item.id === id);
+    if (index === -1) {
+      throw new Error('Item not found');
+    }
+    
+    // Patch the item with new values
+    Object.keys(patchItem).forEach(key => {
+      if ((patchItem as any)[key] !== undefined) {
+        (this.db[index] as any)[key] = (patchItem as any)[key];
+      }
+    });
+    
+    return this.db[index];
+  }
+
   private wrapInPagination(items: any[], pagination: Pagination, totalCount: number, afterFilterCount: number): GetListResposne {
     return {
       page: pagination.page || 1,

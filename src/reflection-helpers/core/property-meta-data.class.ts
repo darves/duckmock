@@ -8,6 +8,14 @@ export class PropertyMetaData {
    * The key name of the property.
    */
   keyName!: string;
+
+  /**
+   * TODO Darko: This is used for swagger; we need to fill it up with right data;
+   * Depending on the mockType we can calculate this....
+   * Assuming 'type' is compatible with Swagger types...
+   */
+  type?: 'string' | 'date' | 'number';
+
   /**
    * The mock type of the property.
    */

@@ -8,6 +8,8 @@ import { GeneratorService } from "./src/generator/generator-service";
 import { GetListParams, RepositoryService } from "./src/repository/repository.service";
 import { FilterService } from "./src/core/filter";
 import { SortService } from "./src/core/sort/sort.service";
+import { SwaggerGenerator } from "./src/swagger-generator/swagger-generator";
+const swaggerUi = require('swagger-ui-express');
 
 dotenv.config();
 
@@ -18,6 +20,19 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
 });
 
+// Basic Swagger definition
+const swaggerSpec = {
+  openapi: '3.0.0',
+  info: {
+    title: 'Dynamic Mock API Documentation',
+    version: '1.0.0',
+    description: 'API documentation generated dynamically based on model metadata',
+  },
+  paths: {},
+  components: {
+    schemas: {}
+  },
+};
 
 RouteGenerator.Instance.getAllControllers(__dirname, './controllers').then((controllers: ControllerModule) => {
   Object.keys(controllers).forEach((key) => {
@@ -30,6 +45,7 @@ RouteGenerator.Instance.getAllControllers(__dirname, './controllers').then((cont
       if (methodKey.toLowerCase().includes('get') && modelInfo) {
         methodKey = methodKey.toLowerCase().replace('get', '');
         methodKey = methodKey.startsWith('/') ? methodKey : `/${methodKey}`;
+        SwaggerGenerator.Instance.addSwagger(modelInfo, controllerConfig.parentFolder);
         app.get(`/${controllerConfig.parentFolder}${methodKey}`, handleGetListRequestWrapper(modelInfo));
         app.get(`/${controllerConfig.parentFolder}${methodKey}/:id`, handleGetSingleRequestWrapper(modelInfo));
       }
@@ -37,8 +53,10 @@ RouteGenerator.Instance.getAllControllers(__dirname, './controllers').then((cont
 
   });
 
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(SwaggerGenerator.Instance.getSwaggerSpec()));
   app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);
+    console.log(`[server]: Swagger is running at http://localhost:${port}/api-docs`);
   });
 });
 
