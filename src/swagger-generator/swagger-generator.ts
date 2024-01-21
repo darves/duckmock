@@ -6,7 +6,7 @@ export class SwaggerGenerator {
   private swaggerSpec = {
     openapi: '3.0.0',
     info: {
-      title: 'Dynamic Mock API Documentation',
+      title: 'DUCKMOCK - Dynamic Mock API Documentation',
       version: '1.0.0',
       description: 'API documentation generated dynamically based on model metadata',
     },
