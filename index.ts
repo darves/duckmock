@@ -7,6 +7,7 @@ import { ModelMetaData } from "./src/reflection-helpers/core/model-meta-data.cla
 import { GeneratorService } from "./src/generator/generator-service";
 import { GetListParams, RepositoryService } from "./src/repository/repository.service";
 import { FilterService } from "./src/core/filter";
+import { SortService } from "./src/core/sort/sort.service";
 
 dotenv.config();
 
@@ -67,7 +68,8 @@ function getListParams(req: Request): GetListParams {
   }
 
   if (req.query._sort) {
-    // result.sort = JSON.parse(req.query._sort as string);
+    result.sort = SortService.Instance.parse(req.query._sort as string);
+    console.log(result.sort);
   }
 
   result.pagination = {

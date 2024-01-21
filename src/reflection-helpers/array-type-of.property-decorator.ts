@@ -1,6 +1,5 @@
 import { IConstructable } from "./core/constructable.interface";
 import { ModelMetaData } from "./core/model-meta-data.class";
-import { PropertyMetaData } from "./core/class-meta-data-base.class";
 
 /**
  * Decorator that marks a property as mockable and type array of another mockable class.

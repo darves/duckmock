@@ -3,8 +3,8 @@ import { AddressMock, addresses } from "../mock-data/data/addresses";
 import { randomEmailAddressesArray } from "../mock-data/data/emails";
 import { firstNames } from "../mock-data/data/first-names";
 import { lastNames } from "../mock-data/data/last-names";
-import { MockAdditionalDate, MockAdditionalNumber } from "../reflection-helpers/core/class-meta-data-base.class";
 import { ModelMetaData } from "../reflection-helpers/core/model-meta-data.class";
+import { MockAdditionalDate, MockAdditionalNumber } from "../reflection-helpers/core/property-meta-data.class";
 import { ClassMetaDataHolder } from "../reflection-helpers/core/service/class-meta-data-holder";
 import { RepositoryService } from "../repository/repository.service";
 

@@ -1,4 +1,5 @@
-import { ClassMetaDataBase, ClassMetaDataBaseInterface, PropertyMetaData } from "./class-meta-data-base.class";
+import { ClassMetaDataBase, ClassMetaDataBaseInterface } from "./class-meta-data-base.class";
+import { PropertyMetaData } from "./property-meta-data.class";
 
 /**
  * Represents the metadata for a model class.

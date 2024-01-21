@@ -17,6 +17,16 @@ export class PropertyMetaData {
    * Can be of type MockAdditionalNumber, MockAdditionalDate, or an object with number keys and string values.
    */
   mockAdditional?: MockAdditionalNumber | MockAdditionalDate | { [s: number]: string };
+
+  /**
+   * The type of the property.
+   */
+  typeOf?: () => (new () => any);
+
+  /**
+   * The array type of the property.
+   */
+  arrayTypeOf?: () => (new () => any);
 }
 
 /**

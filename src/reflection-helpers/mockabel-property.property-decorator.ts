@@ -1,7 +1,7 @@
 import { IConstructable } from "./core/constructable.interface";
 import { ModelMetaData } from "./core/model-meta-data.class";
 import { PropertyMockType } from "../core/property-mock-type.enum";
-import { PropertyMetaData } from "./core/class-meta-data-base.class";
+import { PropertyMetaData } from "./core/property-meta-data.class";
 
 /**
  * Decorator that marks a property as mockable.

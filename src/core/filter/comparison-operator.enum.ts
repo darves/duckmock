@@ -17,6 +17,9 @@ export enum ComparisonOperator {
   In = '=in=',
   NotIn = '=out=',
 
+  Like = "=like=",
+  NotLike = "=nlike="
+
   // this we might need if we want to filter by some property that is type of array;
   // Contains = '=cs=',
   // NotContains = '=ncs=',

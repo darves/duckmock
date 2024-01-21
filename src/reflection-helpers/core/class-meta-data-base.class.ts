@@ -1,4 +1,4 @@
-import { PropertyMockType } from "../../core/property-mock-type.enum";
+import { PropertyMetaData } from "./property-meta-data.class";
 import { ClassMetaDataHolder } from "./service/class-meta-data-holder";
 
 const classMetaDataHolder = ClassMetaDataHolder.Instance;
@@ -101,27 +101,27 @@ export abstract class ClassMetaDataBase implements ClassMetaDataBaseInterface {
 /**
  * Represents the metadata for a class property.
  */
-export class PropertyMetaData {
-  keyName!: string;
-  mockType?: PropertyMockType;
-  mockAdditional?: MockAdditionalNumber | MockAdditionalDate | { [s: number]: string };
+// export class PropertyMetaData {
+//   keyName!: string;
+//   mockType?: PropertyMockType;
+//   mockAdditional?: MockAdditionalNumber | MockAdditionalDate | { [s: number]: string };
 
-  typeOf?: () => (new () => any);
-  arrayTypeOf?: () => (new () => any);
-}
+//   typeOf?: () => (new () => any);
+//   arrayTypeOf?: () => (new () => any);
+// }
 
-/**
- * Represents additional metadata for a number property.
- */
-export interface MockAdditionalNumber {
-  min: number;
-  max: number;
-}
+// /**
+//  * Represents additional metadata for a number property.
+//  */
+// export interface MockAdditionalNumber {
+//   min: number;
+//   max: number;
+// }
 
-/**
- * Represents additional metadata for a date property.
- */
-export interface MockAdditionalDate {
-  start: string;
-  end: string;
-}
+// /**
+//  * Represents additional metadata for a date property.
+//  */
+// export interface MockAdditionalDate {
+//   start: string;
+//   end: string;
+// }

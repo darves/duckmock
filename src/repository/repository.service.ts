@@ -2,6 +2,7 @@ import { ComparisonOperator } from "../core/filter/comparison-operator.enum";
 import { FilterExpressionHolder } from "../core/filter/filter-exporession-holder.model";
 import { FilterExpression } from "../core/filter/filter-expression.model";
 import { Filter } from "../core/filter/filter.model";
+import { LogicalOperator } from "../core/filter/logical-operator.enum";
 import { Pagination } from "../core/pagination/pagination.interface";
 import { Sort } from "../core/sort/sort.model";
 import { Database } from "../db/db";
@@ -34,12 +35,12 @@ export class RepositoryService {
     let afterFilterCount = result.length
 
     if (params.filter) {
-      // result = this.applyFilter(params.filter, result);
+      result = this.applyFilter(result, params.filter);
       afterFilterCount = result.length
     }
 
     if (params.sort) {
-      // result = this.applySort(params.sort, result);
+      result = this.applySort(result, params.sort);
     }
 
     console.log(params)
@@ -70,64 +71,67 @@ export class RepositoryService {
     return items.slice(startIndex, endIndex);
   }
 
-  private applySort(sort: Sort, items: any[]) {
-    Object.keys(sort).forEach(key => {
-      const sortItem = sort[key];
-      items = this.applySortInternal(items, key, sortItem);
-    });
-
-    return items;
-  }
-
-  private applySortInternal(items: any[], property: string, direction: "asc" | "desc" | undefined) {
-    if (!direction) {
-      return items;
-    }
-
-    return items.sort((a, b) => {
-      const aValue = a[property];
-      const bValue = b[property];
-
-      if (aValue === bValue) {
-        return 0;
+  applySort<T = any>(data: T[], sort: Sort<T>): T[] {
+    return data.sort((a, b) => {
+      for (const key in sort) {
+        if (sort[key] !== undefined) {
+          if (a[key] < b[key]) {
+            return sort[key] === 'asc' ? -1 : 1;
+          }
+          if (a[key] > b[key]) {
+            return sort[key] === 'asc' ? 1 : -1;
+          }
+        }
       }
-
-      if (aValue > bValue) {
-        return direction === "asc" ? 1 : -1;
-      }
-
-      return direction === "asc" ? -1 : 1;
+      return 0;
     });
-
   }
 
-  private applyFilter(filter: Filter, items: any[]) {
-    // I want to filter here items by filter object
-    return items.map(item => {
-
-    }) || [];
-  }
-
-  private applyFilters(items: any[], filterExpressions: FilterExpressionHolder[]): any[] {
-    return items;
-  }
-
-  private applyFilterExpression(expression: FilterExpression, item: any): boolean {
-    const property = expression.property;
-    const operator = expression.operator;
-    const value = expression.value;
-    const objValue = item[property];
-
+  evaluateExpression(model: any, expressionHolder: FilterExpressionHolder): boolean {
+    const { property, operator, value } = expressionHolder.expression;
     switch (operator) {
       case ComparisonOperator.Equal:
-        return objValue === value;
+        return model[property] === value;
       case ComparisonOperator.NotEqual:
-        return objValue !== value;
-      // Add more cases for other operators as needed
+        return model[property] !== value;
+      case ComparisonOperator.GreaterThan:
+        return model[property] > value;
+      case ComparisonOperator.GreaterThanOrEqual:
+        return model[property] >= value;
+      case ComparisonOperator.LessThan:
+        return model[property] < value;
+      case ComparisonOperator.LessThanOrEqual:
+        return model[property] <= value;
+      case ComparisonOperator.In:
+        return Array.isArray(value) && value.includes(model[property] as never);
+      case ComparisonOperator.NotIn:
+        return Array.isArray(value) && !value.includes(model[property] as never);
+      case ComparisonOperator.Like:
+        return typeof model[property] === 'string' && model[property].includes(value);
+      case ComparisonOperator.NotLike:
+        return typeof model[property] === 'string' && !model[property].includes(value);
+      // Add cases for other operators...
       default:
-        // Handle unsupported operators or throw an error
         return true;
     }
+  }
+  
+  // Function to apply the filter to the array
+  applyFilter(data: any[], filter: Filter): any[] {
+    return data.filter(item => {
+      let result = this.evaluateExpression(item, filter.expressions[0]);
+
+      for (let i = 1; i < filter.expressions.length; i++) {
+        const expressionHolder = filter.expressions[i];
+        if (expressionHolder.operator === LogicalOperator.And) {
+          result = result && this.evaluateExpression(item, expressionHolder);
+        } else if (expressionHolder.operator === LogicalOperator.Or) {
+          result = result || this.evaluateExpression(item, expressionHolder);
+        }
+      }
+
+      return result;
+    });
   }
 }
 
