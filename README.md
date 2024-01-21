@@ -1,2 +1,3 @@
 # duckmock
-Mock server  - proof of concept
+Mock server - proof of concept
+
