@@ -4,7 +4,7 @@
  */
 export enum ComparisonOperator {
   Equal = '==',
-  NotEqual = '=ne=',
+  NotEqual = '!=',
 
   like = '=like=',
   // NotLike = '=nlike=',
